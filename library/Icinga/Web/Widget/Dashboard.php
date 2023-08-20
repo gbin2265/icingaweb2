@@ -139,6 +139,7 @@ class Dashboard extends AbstractWidget
         if (! count($config)) {
             return false;
         }
+        $urlpane = Url::fromRequest()->getParam($this->tabParam);
         $panes = array();
         $dashlets = array();
         foreach ($config as $key => $part) {
@@ -154,8 +155,10 @@ class Dashboard extends AbstractWidget
                     $panes[$key]->setTitle($part->title);
                 }
                 $panes[$key]->setUserWidget();
-                if ((bool) $part->get('disabled', false) === true) {
-                    $panes[$key]->setDisabled();
+                if ( $urlpane != $key ) {
+                  if ((bool) $part->get('disabled', false) === true) {
+                      $panes[$key]->setDisabled();
+                  }
                 }
             } else {
                 list($paneName, $dashletName) = explode('.', $key, 2);
