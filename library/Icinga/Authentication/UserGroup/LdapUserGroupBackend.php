@@ -715,8 +715,11 @@ class LdapUserGroupBackend extends LdapRepository implements Inspectable, UserGr
             if (! $user->hasDomain() || strtolower($user->getDomain()) !== strtolower($domain)) {
                 return array();
             }
-
-            $username = $user->getLocalUsername();
+            if (  $this->userNameAttribute !== 'sAMAccountName' ) {
+               $username = $user->getUsername();
+            } else {
+              $username = $user->getLocalUsername();
+            }
         } else {
             $username = $user->getUsername();
         }
